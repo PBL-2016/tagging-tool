@@ -1,0 +1,20 @@
+{
+  "name": "tag-tool",
+  "version": "1.0.0",
+  "description": "Fashion image tagging tool",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/PBL-2016/tagging-tool.git",
+  "keywords": [
+    "tagging",
+	"image",
+	"fashion"
+  ],
+  "author": "tamamu",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^1.4.1"
+  }
+}

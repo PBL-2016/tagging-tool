@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>ファッションモデル画像タグ付けツール</title>
+	  <style>
+	    * {
+		    margin: 0;
+		    padding: 0;
+	    }
+      body {
+        overflow-y: hidden;
+      }
+      form {
+        display: block;
+        margin: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        height: 226px;
+        transition: all 1s;
+      }
+	    h1 {
+		    font-size: 24px;
+	    }
+	    h2 {
+		    font-size: 16px;
+	    }
+      #outer-exist {
+        margin: 10px;
+      }
+      #outer-exist:checked ~ form[name="outer"] {
+        display: none;
+      }
+	  </style>
+  </head>
+  <body>
+    <button type="button" id="prev-image">前の画像</button>
+    <button type="button" id="next-image">次の画像</button>
+	  <input id="outer-exist" type="checkbox" name="outer-exist"><label for="outer-exist">アウター無し</label>
+
+    <form name="outer">
+	  <h1>アウター</h1>
+	  <h2>概観</h2>
+	    <input type="radio" name="glitz" value="0">地味系
+	    <input type="radio" name="glitz" value="1">派手系
+
+	  <h2>丈</h2>
+	    <input type="radio" name="_length" value="1">十分
+	    <input type="radio" name="_length" value="0.7">七分
+	    <input type="radio" name="_length" value="0.5">五分
+	    <input type="radio" name="_length" value="0.3">三分
+	    <input type="radio" name="_length" value="0">ノースリーブ
+
+	  <h2>色</h2>
+	    代表色<input type="text" name="color" value="#ffffff">
+	    <button type="button" name="spuit">スポイト</button>
+
+	  <h2>質感</h2>
+	    <input type="checkbox" name="texture">目の詰まった
+      <input type="checkbox" name="texture">目の粗い
+      <input type="checkbox" name="texture">薄い
+      <input type="checkbox" name="texture">厚い
+      <input type="checkbox" name="texture">軽い
+      <input type="checkbox" name="texture">重い
+      <input type="checkbox" name="texture">柔らかい
+      <input type="checkbox" name="texture">堅い
+      <input type="checkbox" name="texture">ツルツル
+      <input type="checkbox" name="texture">ザラザラ
+
+	  <h2>模様</h2>
+      <input type="radio" name="pattern" value="0">無地
+      <input type="radio" name="pattern" value="1">ドット
+      <input type="radio" name="pattern" value="2">チェック
+      <input type="radio" name="pattern" value="3">ボーダー
+      <input type="radio" name="pattern" value="4">ストライプ
+      <input type="radio" name="pattern" value="5">イラスト
+      <input type="radio" name="pattern" value="6">その他
+    </form>
+
+    <form name="inner">
+	  <h1>インナー</h1>
+	  <h2>概観</h2>
+	    <input type="radio" name="glitz" value="0">地味系
+	    <input type="radio" name="glitz" value="1">派手系
+
+	  <h2>丈</h2>
+	    <input type="radio" name="_length" value="1">十分
+	    <input type="radio" name="_length" value="0.7">七分
+	    <input type="radio" name="_length" value="0.5">五分
+	    <input type="radio" name="_length" value="0.3">三分
+	    <input type="radio" name="_length" value="0">ノースリーブ
+
+	  <h2>色</h2>
+	    代表色<input type="text" name="color" value="#ffffff">
+	    <button type="button" name="spuit">スポイト</button>
+
+	  <h2>質感</h2>
+	    <input type="checkbox" name="texture">目の詰まった
+      <input type="checkbox" name="texture">目の粗い
+      <input type="checkbox" name="texture">薄い
+      <input type="checkbox" name="texture">厚い
+      <input type="checkbox" name="texture">軽い
+      <input type="checkbox" name="texture">重い
+      <input type="checkbox" name="texture">柔らかい
+      <input type="checkbox" name="texture">堅い
+      <input type="checkbox" name="texture">ツルツル
+      <input type="checkbox" name="texture">ザラザラ
+
+	  <h2>模様</h2>
+      <input type="radio" name="pattern" value="0">無地
+      <input type="radio" name="pattern" value="1">ドット
+      <input type="radio" name="pattern" value="2">チェック
+      <input type="radio" name="pattern" value="3">ボーダー
+      <input type="radio" name="pattern" value="4">ストライプ
+      <input type="radio" name="pattern" value="5">イラスト
+      <input type="radio" name="pattern" value="6">その他
+    </form>
+
+    <form name="bottom">
+	  <h1>ボトム</h1>
+	  <h2>概観</h2>
+	    <input type="radio" name="glitz" value="0">地味系
+	    <input type="radio" name="glitz" value="1">派手系
+
+	  <h2>丈</h2>
+	    <input type="radio" name="_length" value="1">十分
+	    <input type="radio" name="_length" value="0.7">七分
+	    <input type="radio" name="_length" value="0.5">五分
+	    <input type="radio" name="_length" value="0.3">三分
+	    <input type="radio" name="_length" value="0">ノースリーブ
+
+	  <h2>色</h2>
+	    代表色<input type="text" name="color" value="#ffffff">
+	    <button type="button" name="spuit">スポイト</button>
+
+	  <h2>質感</h2>
+	    <input type="checkbox" name="texture">目の詰まった
+      <input type="checkbox" name="texture">目の粗い
+      <input type="checkbox" name="texture">薄い
+      <input type="checkbox" name="texture">厚い
+      <input type="checkbox" name="texture">軽い
+      <input type="checkbox" name="texture">重い
+      <input type="checkbox" name="texture">柔らかい
+      <input type="checkbox" name="texture">堅い
+      <input type="checkbox" name="texture">ツルツル
+      <input type="checkbox" name="texture">ザラザラ
+
+	  <h2>模様</h2>
+      <input type="radio" name="pattern" value="0">無地
+      <input type="radio" name="pattern" value="1">ドット
+      <input type="radio" name="pattern" value="2">チェック
+      <input type="radio" name="pattern" value="3">ボーダー
+      <input type="radio" name="pattern" value="4">ストライプ
+      <input type="radio" name="pattern" value="5">イラスト
+      <input type="radio" name="pattern" value="6">その他
+    </form>
+  </body>
+
+  <script>
+    // You can also require other files to run in this process
+    require('./renderer.js')
+  </script>
+</html>
