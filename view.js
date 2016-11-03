@@ -36,7 +36,7 @@ function redrawImage() {
 // 最後に選択された領域も描画
 ipcRenderer.on('change-image', (event, arg) => {
   image = new Image()
-  image.src = arg[0]
+  image.src = `${arg[2]}/${arg[0]}`
   image.onload = () => {
     viewCanvas.width = image.width
     viewCanvas.height = image.height

@@ -15,7 +15,6 @@
         display: block;
         margin: 12px;
         border: 1px solid rgba(0, 0, 0, 0.5);
-        height: 226px;
         transition: all 1s;
       }
 	    h1 {
@@ -30,12 +29,39 @@
       #outer-exist:checked ~ form[name="outer"] {
         display: none;
       }
+      #saved-text {
+        color: green;
+      }
+      #failed-text {
+        color: red;
+      }
+      .hide {
+        display: none;
+      }
+      .fadeout-animation {
+        display: inline;
+        animation-duration: 1.0s;
+        animation-name: fadeout;
+        animation-iteration-count: 2;
+        animation-direction: alternate;
+        animation-fill-mode: forwards;
+      }
+      @keyframes fadeout {
+        0% {
+          opacity: 0.0;
+        }
+        100% {
+          opacity: 1.0;
+        }
+      }
 	  </style>
   </head>
   <body>
     <button type="button" id="prev-image">前の画像</button>
     <button type="button" id="next-image">次の画像</button>
 	  <input id="outer-exist" type="checkbox" name="outer-exist"><label for="outer-exist">アウター無し</label>
+    <p id="saved-text" class="hide">●保存完了</p>
+    <p id="failed-text" class="hide">●保存失敗</p>
 
     <form name="outer">
 	  <h1>アウター</h1>

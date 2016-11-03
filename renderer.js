@@ -2,7 +2,7 @@
 const {ipcRenderer} = require('electron');
 
 // アプリケーションで入力された全てのデータを格納
-window.allData = [];
+window.allData = {};
 // アウター存在確認チェックボックス要素
 window.outerExistChkbox = null;
 // アウター入力フォーム
@@ -13,6 +13,11 @@ window.innerForm = null;
 window.bottomForm = null;
 // 現在タグ付け中のデータ名(画像名)
 let currentDataName = '';
+
+let savedText = null;
+let failedText = null;
+
+
 
 // RGBを16進数表記(#ffffff)に変換
 function toHex(r, g, b){
@@ -27,34 +32,47 @@ window.getCurrentDataName = () => {
   return currentDataName;
 }
 
+function saveData(){
+  let result = ipcRenderer.sendSync('save-data', window.allData);
+  if (result) {
+    savedText.className = 'hide';
+    savedText.className = "fadeout-animation";
+  } else {
+    failedText.className = 'hide';
+    failedText.className = "fadeout-animation";
+  }
+}
+
 // 次の画像ボタンが押されたら発生
 function loadNext(){
+  saveData();
   // メインプロセスに次の画像名をリクエスト
   var response = ipcRenderer.sendSync('load-next');
   currentDataName = response;
   // 該当データを入力フォームに適用
   loadData(response);
   // 画像名とその領域をメインプロセスへ通達->画像ウィンドウへ
-  ipcRenderer.send('change-image', [response, allData[currentDataName].rect]);
+  ipcRenderer.send('change-image', [response, window.allData[currentDataName].rect]);
 }
 
 // 前の画像ボタンが押されたら発生
 function loadPrev(){
+  saveData();
   // メインプロセスに前の画像名をリクエスト
   var response = ipcRenderer.sendSync('load-prev');
   currentDataName = response;
   // 該当データを入力フォームに反映
   loadData(response);
   // 画像名とその領域をメインプロセスへ通達->画像ウィンドウへ
-  ipcRenderer.send('change-image', [response, allData[currentDataName].rect]);
+  ipcRenderer.send('change-image', [response, window.allData[currentDataName].rect]);
 }
 
 // 指定された画像のデータを入力フォームに反映
 // データが存在しなければここで新たに作る
 function loadData(imageName){
   // console.log(allData[imageName]);
-  if (!allData[imageName]) {
-    allData[imageName] = {
+  if (!window.allData[imageName]) {
+    window.allData[imageName] = {
       rect: {sx: 0, sy: 0, ex: 0, ey: 0},
       outerExist: true,
       outer:{
@@ -80,7 +98,7 @@ function loadData(imageName){
       }
     }
   }
-  initForm(allData[imageName]);
+  initForm(window.allData[imageName]);
 }
 
 // データを入力フォームに反映する関数
@@ -136,6 +154,14 @@ function genFormChangeHandler(dataPosition, form) {
 }
 
 window.onload = () => {
+  savedText = document.getElementById('saved-text');
+  failedText = document.getElementById('failed-text');
+  savedText.addEventListener('animationend', (e)=>{
+    savedText.className = 'hide';
+  });
+  failedText.addEventListener('animationend', (e)=>{
+    failedText.className = 'hide';
+  });
   // 前の画像ボタンを捕捉
   let prevButton = document.getElementById('prev-image');
   // 次の画像ボタンを捕捉
@@ -151,7 +177,7 @@ window.onload = () => {
 
   // アウター存在確認チェックボックスのイベントハンドラを設定
   outerExistChkbox.onchange = () => {
-    allData[getCurrentDataName()].outerExist = !outerExistChkbox.checked;
+    window.allData[getCurrentDataName()].outerExist = !outerExistChkbox.checked;
   }
   // 各入力フォームのイベントハンドラを設定
   outerForm.onchange = genFormChangeHandler('outer', 'outerForm');
@@ -172,24 +198,36 @@ window.onload = () => {
   bottomForm.spuit.onclick = () => {
     ipcRenderer.send('spuit-bottom');
   }
-
-  // 各部分の色が通達されたら発生
-  // 該当するフォームに色情報を16進数表記で反映
-  ipcRenderer.on('outer-color', (event, arg) => {
-    outerForm.color.value = toHex(arg[0], arg[1], arg[2]);
-    allData[getCurrentDataName()].outer.color = outerForm.color.value;
-  })
-  ipcRenderer.on('inner-color', (event, arg) => {
-    innerForm.color.value = toHex(arg[0], arg[1], arg[2]);
-    allData[getCurrentDataName()].inner.color = innerForm.color.value;
-  })
-  ipcRenderer.on('bottom-color', (event, arg) => {
-    bottomForm.color.value = toHex(arg[0], arg[1], arg[2]);
-    allData[getCurrentDataName()].bottom.color = bottomForm.color.value;
-  })
-  // 領域選択が通達されたら発生
-  // 領域情報をデータに格納
-  ipcRenderer.on('region-rect', (event, arg) => {
-    allData[getCurrentDataName()].rect = arg;
-  })
 }
+
+// 各部分の色が通達されたら発生
+// 該当するフォームに色情報を16進数表記で反映
+ipcRenderer.on('outer-color', (event, arg) => {
+  outerForm.color.value = toHex(arg[0], arg[1], arg[2]);
+  window.allData[getCurrentDataName()].outer.color = outerForm.color.value;
+})
+ipcRenderer.on('inner-color', (event, arg) => {
+  innerForm.color.value = toHex(arg[0], arg[1], arg[2]);
+  window.allData[getCurrentDataName()].inner.color = innerForm.color.value;
+})
+ipcRenderer.on('bottom-color', (event, arg) => {
+  bottomForm.color.value = toHex(arg[0], arg[1], arg[2]);
+  window.allData[getCurrentDataName()].bottom.color = bottomForm.color.value;
+})
+// 領域選択が通達されたら発生
+// 領域情報をデータに格納
+ipcRenderer.on('region-rect', (event, arg) => {
+  window.allData[getCurrentDataName()].rect = arg;
+})
+
+ipcRenderer.on('quit-get-all-data', (event, arg) => {
+  ipcRenderer.send('quit-return-all-data', window.allData);
+})
+
+ipcRenderer.on('init-data', (event, arg) => {
+  window.allData = arg[0];
+  currentDataName = arg[1];
+  // 該当データを入力フォームに反映
+  loadData(currentDataName);
+  ipcRenderer.send('change-image', [currentDataName, window.allData[currentDataName].rect]);
+})
